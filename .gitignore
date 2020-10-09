@@ -3,3 +3,5 @@ node_modules
 .nyc_output
 project.xcworkspace
 xcuserdata
+windows/RandomBytes/bin
+windows/RandomBytes/obj
