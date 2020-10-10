@@ -1,29 +1,59 @@
-﻿using System;
+﻿using ReactNative.Bridge;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using System.Text.RegularExpressions;
-using Windows.Security.Credentials.UI;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.Storage.Streams;
+using Windows.Security.Cryptography;
 
-using Microsoft.ReactNative.Managed;
-using Microsoft.ReactNative;
-using Windows.Networking;
-using Windows.Networking.Connectivity;
-using Windows.Devices.Power;
-using Windows.ApplicationModel;
-using Windows.System;
-
-namespace RandomBytes
+namespace Random.Bytes.RandomBytes
 {
-    [ReactModule("RandomBytes")]
-    class RandomBytesModule
+    /// <summary>
+    /// A module that allows JS to share data.
+    /// </summary>
+    class RandomBytesModule : NativeModuleBase
     {
-        [ReactMethod]
-        public async void randomBytes(IReactPromise<string> promise)
+        private static string SEED_KEY = "seed";
+        /// <summary>
+        /// Instantiates the <see cref="RandomBytesModule"/>.
+        /// </summary>
+        internal RandomBytesModule()
         {
-            promise.Resolve("TEST");
         }
+
+        /// <summary>
+        /// The name of the native module.
+        /// </summary>
+        public override string Name
+        {
+            get
+            {
+                return "RandomBytes";
+            }
+        }
+
+        public override IReadOnlyDictionary<string, object> Constants
+        {
+            get
+            {
+                return new Dictionary<string, object>
+                {
+                    {SEED_KEY, getRandomBytes(4096)}
+                };
+            }
+        }
+
+        [ReactMethod]
+        public void randomBytes(uint size, IPromise promise)
+        {
+            promise.Resolve(this.getRandomBytes(size));
+        }
+
+        private string getRandomBytes(uint size)
+        {
+            IBuffer buffer = CryptographicBuffer.GenerateRandom(size);
+            return CryptographicBuffer.EncodeToHexString(buffer);
+        }
+
     }
 }
