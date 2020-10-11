@@ -15,13 +15,19 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "tap tests",
-    "lint": "eslint ."
+    "android": "react-native run-android --root example",
+    "ios": "react-native run-ios --project-path \"./example/ios\"",
+    "start": "react-native start",
+    "lint": "eslint .",
+    "test": "tap tests"
   },
   "keywords": [
     "PKCE",
     "oauth2"
   ],
+  "peerDependencies": {
+    "react-native": "*"
+  },
   "dependencies": {
     "crypto-js": "3.3.0"
   },
@@ -29,6 +35,7 @@
     "eslint": "^7.7.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
+    "react-native": "^0.63.3",
     "tap": "^14.10.8"
   }
 }
